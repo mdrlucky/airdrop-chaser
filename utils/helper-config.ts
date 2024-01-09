@@ -15,6 +15,8 @@ type Path = {
     steps: PoolStep[]
     tokenIn: string
     amountIn: string
+    balance?: string; // Ajout de la propriété balance pour stocker le solde
+
 }
 
 export type TokenConfig = {
@@ -22,6 +24,7 @@ export type TokenConfig = {
     decimals: number
     address: string
     amount: string
+    balance?: string; // Ajout de la propriété balance pour stocker le solde
     paths: Path[]
 }
 
@@ -69,6 +72,14 @@ export type PoolType = {
         [key: string]: string
     }
     relationships: Relationships
+}
+
+// Ajout de la fonction getBalance pour obtenir le solde d'un token donné
+async function getBalance() {
+   const result = await contract.methods.balanceOf(walletAddress).call();
+   const decimals = await contract.methods.decimals().call();
+   const balance = new BigNumber(result).div(10 ** decimals);
+   return balance;
 }
 
 export const configs: Configs = {

@@ -172,7 +172,12 @@ async function executeSwapCoin(
                             accountAddress,
                             configs[network.chainId.toString()]!.SyncSwap!.routerAddress
                         )
+                    //-- Let the use know the balance held before swap
+                    let decimalBalance = Number(balanceOfCoin);
+                    console.log("Before swap, I hold " + (decimalBalance / 1000000) + " " + initialCoin); 
+                    // --
                         if (allowance < bigIntAmount) {
+                            console.log("Let's approve "+ initialCoin) // Let the user know that an approve is needed for the token
                             const approveTx = await erc20Contract
                                 .connect(signer)
                                 .approve(configs[network.chainId.toString()]!.SyncSwap!.routerAddress, bigIntAmount)
